@@ -3,17 +3,25 @@ require 'openssl'
   DIGEST = OpenSSL::Digest::SHA256.new
 class User < ApplicationRecord
   has_many :questions
+
+  before_validation :downcase_username
+
   validates :email, :username, presence: true
   validates :email, :username, uniqueness: true
+  validates :email, format: { with: /.+@.+\..+/i }
+  validates :username, length: { maximum: 40 }
+  validates :username, format: { with: /\A[a-zA-Z0-9\_]+\z/ }
+
+
 
   attr_accessor :password
 
-  # validates_presence_of :password, on: :create
-  # validates_confirmaiton_of :password
+
   validates :password, presence: true, on: :create
 
-  # и поле подтверждения пароля
   validates_confirmation_of :password
+
+
 
   before_save :encrypt_password
 
@@ -63,6 +71,10 @@ class User < ApplicationRecord
 
     # Иначе, возвращаем nil
     nil
+  end
+
+  def downcase_username
+    self.username = username.downcase
   end
 
 end
