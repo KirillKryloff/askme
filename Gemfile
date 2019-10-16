@@ -8,6 +8,8 @@ gem 'rails', '~> 5.2.3'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
+gem 'jquery-rails'
+
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
