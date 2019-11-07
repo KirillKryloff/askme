@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  before_action :load_user, except: [:index, :create, :new]
+
   def index
     @users = User.all
   end
@@ -16,20 +18,45 @@ class UsersController < ApplicationController
       # Если удачно, отправляем пользователя на главную с помощью метода redirect_to
       # с сообщением
       redirect_to root_url, notice: 'Пользователь успешно зарегистрирован!'
+    else
+      render 'new'
     end
   end
 
   def edit
+
+  end
+
+  def update
+
+    # Делаем проверку
+    if @user.update(user_params)
+      # Если удачно, отправляем пользователя на главную с помощью метода redirect_to
+      # с сообщением
+      redirect_to user_path(@user), notice: 'Данные обновлены'
+    else
+      render 'edit'
+    end
   end
 
   def show
-    @user = User.find(params[:id])
-    @new_question = @user.questions.build
-    @questions = @user.questions.to_a.select(&:persisted?)
+    # берём вопросы у найденного юзера
+    @questions = @user.questions.order(created_at: :desc)
 
+    # Для формы нового вопроса создаём заготовку, вызывая build у результата вызова метода @user.questions.
+    @new_question = @user.questions.build
+    @questions_count = @questions.count
+    @answers_count = @questions.where.not(answer: nil).count
+    @unanswered_count = @questions_count - @answers_count
   end
 
   private
+
+  def load_user
+    # защищаем от повторной инициализации с помощью ||=
+    @user ||= User.find params[:id]
+  end
+
   def user_params
   # берём объект params, потребуем у него иметь ключ
   # :user, у него с помощью метода permit разрешаем

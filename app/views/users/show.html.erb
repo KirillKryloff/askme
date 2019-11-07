@@ -7,6 +7,10 @@
     <%# Выводим имя пользователя %>
     <%= @user.name %>
   </h1>
+  
+  <div class="buffer-both">
+    <%= link_to 'Редактировать профиль', edit_user_path(@user) %>
+  </div>
 
   <div class="user-image-div">
     <%# Рисуем аватарку пользователя. Мы используем хелперы image_tag, %>
@@ -16,10 +20,23 @@
 
   <h2 class="title-small buffer-both">
     <%# Выводим никнейм пользователя с символом «@» перед ним. %>
+    У пользователя 
     @<%= @user.username %>
+
   </h2>
 
-  Всего <%= @user.questions.count %> <%= declension(@user.questions.count, "вопрос", "вопроса", "вопросов")  %>
+  всего
+  <%= @questions_count %>
+
+  <%= declension(@user.questions.count, "вопрос", "вопроса", "вопросов") %>,
+
+  <%= @answers_count %>
+  
+  <%= declension(@answers_count, "ответ", "ответа", "ответов") %> и
+
+  <%= @unanswered_count %>
+
+  <%= declension(@unanswered_count, "безответный вопрос", "безответных вопроса", "безответных вопросов") %> 
 
   <div class="user-ask-button container text-center">
     <%# Используем встроенный в rails хелпер link_to %>
