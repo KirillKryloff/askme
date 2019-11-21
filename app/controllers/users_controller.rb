@@ -21,6 +21,7 @@ class UsersController < ApplicationController
     if @user.save
       # Если удачно, отправляем пользователя на главную с помощью метода redirect_to
       # с сообщением
+      session[:user_id] = @user.id
       redirect_to root_url, notice: 'Пользователь успешно зарегистрирован!'
     else
       render 'new'
