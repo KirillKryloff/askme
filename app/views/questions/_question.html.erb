@@ -9,6 +9,13 @@
       <%= question.text %>
     </div>
 
+    <div class="question-date">
+      <% if question.author %>
+        <%= link_to "Вопрос от @#{question.author.username}", user_path(question.author) %>
+      <% end %>
+      <%= l(question.created_at, format: :short) %> 
+    </div>
+
     <%# Текст ответа, если он есть %>
     <% if question.answer.present? %>
       <div class="question-answer text-lead">
