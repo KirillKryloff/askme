@@ -12,6 +12,8 @@
     <div class="question-date">
       <% if question.author %>
         <%= link_to "Вопрос от @#{question.author.username}", user_path(question.author) %>
+      <% else %>
+        <%= "Автор вопроса не представился" %>
       <% end %>
       <%= l(question.created_at, format: :short) %> 
     </div>
